@@ -50,16 +50,25 @@ public class BookController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteBookById(@PathVariable int id) {
+    public ResponseEntity<?> deleteBookById(@PathVariable int id) {
         try {
             bookService.deleteBookById(id);
-            return new ResponseEntity(HttpStatus.ACCEPTED);
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
         }
         catch (BookNotFoundException e){
-            return new ResponseEntity(e.getMessage(),HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.FORBIDDEN);
         }
     }
     /*
     * Implement Patch
     * */
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> patchBookById(@PathVariable int id, @RequestBody BookRequestDto dto) {
+        try {
+            return ResponseEntity.ok(bookService.patchBookById(id, dto));
+        } catch (BookNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
+        }
+    }
 }

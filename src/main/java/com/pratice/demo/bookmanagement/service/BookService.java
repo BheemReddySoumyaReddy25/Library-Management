@@ -15,4 +15,6 @@ public interface BookService {
     BookResponseDto updateBookById(int id, BookRequestDto dto);
 
     boolean deleteBookById(int id);
+
+    BookResponseDto patchBookById(int id, BookRequestDto dto);
 }

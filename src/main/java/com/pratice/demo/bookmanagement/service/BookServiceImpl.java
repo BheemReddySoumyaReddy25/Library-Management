@@ -75,4 +75,22 @@ public class BookServiceImpl implements BookService{
             throw new BookNotFoundException("Book not found");
         return repository.deleteById(id);
     }
+
+    @Override
+    public BookResponseDto patchBookById(int id, BookRequestDto dto) {
+        Book existing = repository.findById(id)
+                .orElseThrow(() -> new BookNotFoundException("Book not found"));
+        if (dto.getTitle() != null) {
+            existing.setTitle(dto.getTitle());
+        }
+        if (dto.getAuthor() != null) {
+            existing.setAuthor(dto.getAuthor());
+        }
+        if (dto.getCategory() != null) {
+            existing.setCategory(dto.getCategory());
+        }
+        existing.setUpdatedOn(LocalDateTime.now());
+        Book updated = repository.save(existing);
+        return BookResponseDto.fromModel(updated);
+    }
 }
